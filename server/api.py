@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request
 from flask_mysqldb import MySQL
 import MySQLdb.cursors
 import MySQLdb.cursors, re, hashlib
@@ -24,12 +24,16 @@ def employees():
     return json.dumps( users )
 
 # Insert User to database
-@app.route("/insert-user")
+@app.route("/insert-user", methods=['POST'])
 def insertuser():
+    content = request.json
     cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-    cursor.execute('INSERT INTO tbl_employees VALUES (NULL, %s, %s, %s)', ('dave', '123', 'dave@gmail.com'))
+    cursor.execute('INSERT INTO tbl_employees VALUES (NULL, %s, %s, %s)', (content['username'], content['email'], content['password']))
     mysql.connection.commit()
-    return 'You have successfully registered!'
+
+    cursor.execute('SELECT * FROM tbl_employees')
+    users = cursor.fetchall()
+    return json.dumps( users )
 
 
 
