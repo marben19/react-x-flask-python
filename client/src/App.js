@@ -24,8 +24,12 @@ export default function App() {
     })
     .then(response => response.json())
     .then(data => {
-      console.log(data)
-    } );
+      alert("Data inserted!")
+      setData(data)
+      formData.username = ""
+      formData.email = ""
+      formData.password = ""
+    });
 
 
   }
@@ -67,16 +71,33 @@ export default function App() {
         <input type='password' name='password' placeholder='Password' onChange={handleChange} value={formData.password} /> <br />
 
         <button onClick={handleClick}> Send </button>
-        {
-          data.map(function(e, i) {
-            return (
-              <p key={i}>
-                Applicant username:  {e.username} <br />
-                Applicant email: {e.email}
-              </p>
-            )
-          })
-        }
+
+        <br />
+        <br />
+
+        <table >
+          <thead>
+            <tr>
+              <th>Username</th>
+              <th>Email</th>
+              <th>Password</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              data.map(function(e, i) {
+                return (
+                  <tr key={i}>
+                    <td>{e.username}</td>
+                    <td>{e.email}</td>
+                    <td>{e.password}</td>
+                  </tr>
+                )
+              })
+            }
+          </tbody>
+        </table>
+
       </div>
     </>
 
